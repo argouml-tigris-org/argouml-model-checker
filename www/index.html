@@ -13,12 +13,8 @@
 </head>
 <body>
 
-<p>This is the initial web content for your project.  Please customize
-this to fit your project.  You don't need to answer all these questions
-or follow this exact format, but we do like to see this kind of
-information in any project.
-</p>
 
+<!--
 <p>Your project is visible to all users now, so &quot;putting on a good face&quot; by fixing up this page might be your first priority.
 </p>
 
@@ -39,27 +35,41 @@ project.</li>
 
 <li>You can add a "Highlights:" line to the top of all web pages by adding a file www/project_highlights.html </Li>
 </ul>
-
+-->
 
 <h3>Mission</h3>
 
-<p>What is the goal of this project?
+<p>The goal of this project is to integrate model checking with ArgoUML. This is done by automatic translation of UML
+model to model checker's input notation. Once the model is translated and the properties to be checked are provided,
+the model checker is executed to verify the properties.
 </p>
 
-<p>What is the scope of this project?
+<p>The model checker I am currently using is NuSMV. However, this can be extended for other model checking tools such as SPIN.  
 </p>
 
-<p>For example:</p>
+<h3>Strategy</h3>
+
+<p>The translator for model checker uses the class diagram for the static structure of the system, and the statechart diagram for the dynamic behaviour of the system.</p>
+
+<p>Before translation could be performed, UML model has to be validated. The validation consists of the following steps:
+</p>
 
 <ul>
-<li>Develop just enough functionality to scratch a particular itch</li>
-<li>Build a tool just like XYZ, but less broken</li>
-<li>Build the best XYZ-tool ever!</li>
+<li>Syntactic Correctness:  ensures that the specified UML model conforms to the abstract syntax of the UML metamodel (v1.4)</li>
+<li>Semantic Correctness: semantic check verifies a number of conditions that directly affects the translation </li>
+<li>Finite State Space: model checker requires the state space to be finite</li>
 </ul>
 
 
-<p>What are high-level features you are sure to build?
+<p>Once the UML model is validated, the translation process begins by transforming the static structure
+ of the UML model, and then performing code generation. 
 </p>
+<p>
+For each class, a module is created, and the dynamic behaviour of the class specified by the statechart diagram is 
+translated within the module.
+</p>
+
+<!--
 <ul>
 
 <li>What would you write on a billboard about your project? Users
@@ -86,19 +96,38 @@ functional areas will depend on what you are trying to do.
 
 <li>Try to keep this part short.
 </ul>
+-->
 
+<h3>Contribution</h3>
+
+<p>I am completely open for new Ideas. So, if you would like to propose a new code generation strategy or you would like
+to share your works with me or anything that would contribute towards the project, please go ahead and contact me.</p>
+
+<p>There are a few issues that I would like to share with you: </p> 
+
+<ul>
+<li>Counterexample Representation in UML: There are two options to show the C/E given by model checker: one is to give the trace in textual format,
+ the other is to represent it graphically using one of the diagrams, eg. Sequence Diagram. Sequence Diagram is not really a good option, because 
+ it does not show the internal behavior of the object at the time the inconsistency or error occurs.</li>
+
+<li>Incremental Checking: How do you think incremental checking can be performed, so that as soon as a property is falsified, a C/E is provided, 
+bearing in mind that the model has to be weakly executable at the time translation is performed?</li>
+
+<li>Properties Specification: The properties must be expressed in terms of CTL or LTL. Not
+everyone knows how to write temporal logic. So, How should the users specify the properties?</li>
+</ul>
+
+<p>If you have any suggestions regarding the above issues, please come forward and let me know.</p>
+
+<h3>How to Collaborate</h3>
+
+<p>Anybody willing to help with developing the model checker module is highly welcomed. Please, send me a mail and we'll figure out how we could collaborate.</p>
 
 <h3>Related resources</h3>
 
 <ul>
-<li>Link to other stuff that you know about.  It will help you
-research requirements and provide a useful resource to potential
-contributors.</li>
-
-<li>Why reinvent the wheel? What is better about this wheel?  Is there
-any existing project that you can partner with or reuse?</li>
-
-<li>Where would you go to try to find potential contibutors?</li>
+<li><a href="http://nusmv.irst.itc.it/">NuSMV Home Page</a>
+</li>
 </ul>
 
 </body>
