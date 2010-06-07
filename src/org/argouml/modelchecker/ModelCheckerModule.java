@@ -40,8 +40,7 @@ import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.uml.reveng.SettingsTypes;
 import org.argouml.util.SuffixFilter;
 
-public class ModelCheckerModule implements ModuleInterface, ImportInterface,
-CodeGenerator
+public class ModelCheckerModule implements ModuleInterface, CodeGenerator
 {
     private static Language lang = GeneratorHelper.makeLanguage("SMV");
 
@@ -54,7 +53,6 @@ CodeGenerator
     public boolean enable()
     {
         GeneratorManager.getInstance().addGenerator(ModelCheckerModule.lang, this);
-        ImporterManager.getInstance().addImporter(this);
 
         // TODO:
         // enable Notation
@@ -65,7 +63,6 @@ CodeGenerator
     public boolean disable()
     {
         GeneratorManager.getInstance().removeGenerator(ModelCheckerModule.lang);
-        ImporterManager.getInstance().removeImporter(this);
         return true;
     }
 
@@ -85,79 +82,11 @@ CodeGenerator
             case VERSION:
                 return "0.01";
         }
-
+        
         return null;
     }
     
-    // code importer
-    public SuffixFilter[] getSuffixFilters()
-    {
-        return ModelCheckerModule.SUFFIX_FILTERS;
-    }
-
-    public List<SettingsTypes.Setting> getImportSettings()
-    {
-        List<SettingsTypes.Setting> settings = 
-            new ArrayList<SettingsTypes.Setting>();
-        // TODO Auto-generated method stub
-        return settings;
-    }
-    
-    public boolean isParseable(File file)
-    {
-        if (!file.canRead())
-        {
-            return false;
-        }
-
-        if (!FileImportUtils.matchesSuffix(file, this.getSuffixFilters()))
-        {
-            return false;
-        }
-
-        return true;
-    }
-    
-    /*
-     * for parsing files to create the model Code2Model
-     */
-    public Collection parseFiles(Project p, Collection<File> files,
-            ImportSettings settings, ProgressMonitor monitor)
-    throws ImportException
-    {
-        ArrayList<Object> res = new ArrayList<Object>();
-
-        monitor.setMaximumProgress(files.size());
-
-        for (Object o : files)
-        {
-            File f;
-            try
-            {
-                f = (File) o;
-            }
-            catch (ClassCastException e)
-            {
-                LOG.error("not a file: " + o);
-                continue;
-            }
-
-            Code2Model c2m = new Code2Model();
-            ArrayList<Object> tmp = c2m.toModel(f);
-            if (tmp != null)
-            {
-                res.addAll(tmp);
-            }
-            monitor.updateProgress(1);
-        }
-
-        return res;
-    }
-    
-    
-    
-    
- // code generator
+    // code generator
     public Collection generate(Collection objs, boolean deps)
     {
         Model2SourceUnits t = new Model2SourceUnits("", deps);
@@ -172,8 +101,7 @@ CodeGenerator
             return null;
         }
 
-    }
-    
+    }   
     
     public Collection generateFiles(Collection objs, String path, boolean deps)
     {
@@ -219,6 +147,7 @@ CodeGenerator
         return res;
     }
 
+    
     public Collection generateFileList(Collection objs, boolean deps)
     {
         Collection<String> res = new ArrayList<String>();
@@ -245,5 +174,4 @@ CodeGenerator
     }
    
 
-    
 }
